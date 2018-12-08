@@ -49,7 +49,7 @@ export const PageContent = styled.div`
     background: transparent;
     width: 96%;
     height: 90vh;
-    margin: 0 0 0 2.6%;
+    margin: 0 0 0 2.5%;
 `
 export const ContentBox = styled.div`
     position: relative;
