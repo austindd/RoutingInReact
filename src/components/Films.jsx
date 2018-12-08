@@ -1,35 +1,42 @@
 import React, { Component } from 'react';
-import { H1 } from './app-styles/AppTheme';
+import { H1, PageContent, DivWrapper, PurpleGradientH1 } from './app-styles/AppTheme';
+import FetchAPI from './shared/FetchAPI.js';
+import FilmCard from './FilmCard';
 
 class Films extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            filmArr: [],
-            filmKeys: [],
+            filmObjects: [],
+            filmElements: [],
         }
+        this.buildElements = this.buildElements.bind(this);
+    }
+
+    buildElements(resultArr) {
+        let myElements = resultArr.map((val) => {
+            return <FilmCard key={val.key} filmData={val}></FilmCard>
+        });
+        this.setState( () => {
+            return {
+            filmObjects: resultArr,
+            filmElements: myElements,
+        }
+        });
     }
 
     componentDidMount() {
-        console.log(this.props.match);
-        fetch("https://ghibliapi.herokuapp.com/films/")
-        .then((res) => res.json())
-        .then((obj) => {
-            console.log(obj);
-            let myKeys = obj.map((val, index) => index) // generating keys based on number of object properties
-            this.setState({
-                filmArr: obj,
-                filmKeys: myKeys,
-            })
-        })
+        FetchAPI.films(this.buildElements);        
     }
 
     render() {
         return (
-            <>
-                <H1>Films</H1>
-                
-            </>
+            <PageContent>
+                <DivWrapper>
+                        <PurpleGradientH1 style={{textAlign: 'center'}}>Films</PurpleGradientH1>
+                    {this.state.filmElements}
+                </DivWrapper>
+            </PageContent>
         );
     }
 }
